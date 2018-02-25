@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GoodReceivedNote" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d79c846e-f00c-494b-82e5-012729fed56d">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="16"/>
+	<parameter name="grn_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select e.external_grn_id,e.purchase_order_id,e.date,e.description,
+ei.item_id,ei.batch_no,ei.description,ei.qty,isub.price,
+i.item_name,s.name as supname,isub.price*ei.qty as amount
+from external_grn e
+left join external_grn_item ei
+on e.external_grn_id=ei.external_grn_id
+left join item i
+on i.item_id=ei.item_id
+left join item_sub isub
+on isub.item_id=ei.item_id and isub.batch_no=ei.batch_no
+left join purchase_order p
+on e.purchase_order_id=p.purchase_order_id
+left join supplier s
+on s.sid=p.supplier_id
+where e.external_grn_id=$P{grn_no}]]>
+	</queryString>
+	<field name="external_grn_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="purchase_order_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="batch_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="qty" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="supname" class="java.lang.String"/>
+	<field name="amount" class="java.lang.Double"/>
+	<variable name="No" class="java.lang.Number">
+		<variableExpression><![CDATA[$V{No}+1]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="amount_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band height="802" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="31" y="119" width="70" height="301" backcolor="#FFFFFF" uuid="e6891471-ca7f-43a7-8152-9930375e8769"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="119" width="555" height="561" uuid="ed4eff86-4038-42e2-a084-3698897b4249"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="373" y="119" width="84" height="603" uuid="bc8a7bb2-5719-45c3-8bdf-b3fca7301bac"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="51" y="119" width="260" height="561" backcolor="#FFFFFF" uuid="2f105788-fce6-4e6f-aa59-53179d1b8579"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="119" width="555" height="20" uuid="5b5850ea-bad3-449d-a060-7a9b18833792"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="457" y="680" width="98" height="42" uuid="58f8cef2-e560-44d8-b12f-db40e6734990"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</background>
+	<title>
+		<band height="119" splitType="Stretch">
+			<staticText>
+				<reportElement x="303" y="70" width="76" height="20" uuid="77abd46e-e07a-444f-9c03-712b850346fc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="90" width="109" height="20" uuid="18af54ee-02e6-4783-87c1-4c3ee02029de"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Purchase Order No ]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="412" y="70" width="135" height="20" uuid="bc7e3910-540c-4736-80ba-5bfeccb4e7a1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="412" y="90" width="134" height="20" uuid="cba61ae8-32e3-44eb-b4dc-433f027fc87c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{purchase_order_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="303" y="30" width="109" height="20" uuid="25f25db2-b0ac-4687-b958-ae8aada405a1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supplier ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="30" width="13" height="20" uuid="6dff12c6-921e-4234-a217-c02b8d8c3549"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="70" width="13" height="20" uuid="44ab860f-161b-4386-9e69-69709e9f0da0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="50" width="13" height="20" uuid="3085d131-f64f-4117-b02e-e054431d56e3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="50" width="109" height="20" uuid="f45cba54-489a-4cae-aa2b-e70d33729517"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GRN No]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="412" y="30" width="135" height="20" uuid="aef335e7-f9af-4370-a871-78262e7a79be"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{supname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="50" width="135" height="20" uuid="abe9200b-9ccd-4cd5-9b1e-39f7cae3f761"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{external_grn_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="61" width="289" height="52" uuid="fba56c95-1c19-42e3-bf1c-55a042a152b6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[477, Nawala Road, Rajagiriya, Sri Lanaka
+Tel : 0112877454 Fax:
+e-mail: d-kitchen@delanka.com
+VAT REG No. 114407267-7000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="9" width="539" height="20" uuid="72570ec7-011d-4c5a-8a9a-498dd7091ede"/>
+				<textElement textAlignment="Center">
+					<font fontName="Segoe UI Symbol" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Good Received Note]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="90" width="13" height="20" uuid="b60276ff-33a2-4bf3-8878-4ac1067dcbbd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="24" width="291" height="57" forecolor="#0099CC" uuid="61f2c924-c653-4ee4-85e3-9e97710c8980"/>
+				<textElement>
+					<font fontName="Segoe UI Symbol" size="16" isBold="true" isItalic="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Delanka ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="29" width="291" height="57" forecolor="#000000" uuid="a7674068-c1b9-4c1a-a891-ea860fd46947"/>
+				<textElement>
+					<font fontName="Segoe UI Symbol" size="12" isBold="true" isItalic="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[                  Hotel Catering Equipments &
+Service Supply (PVT) Ltd.
+]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="0" width="59" height="19" uuid="ad761b1b-8847-4ff0-a4df-ea1688eb05af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="0" width="250" height="19" uuid="ddaa97a1-8ebb-4b0c-b97f-0202f125cfdc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="0" width="61" height="19" uuid="b3348c65-ca69-43be-8ca8-fe2d0cd5aa83"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="374" y="0" width="85" height="19" uuid="57211b7f-03f7-4ca1-9b2c-53f3d783f757"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UnitPrice (Rs.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="0" width="93" height="19" uuid="a9f2cd2f-bc94-4fbb-bbd0-ae6fb94e5e49"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount (Rs.)]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="1" width="58" height="20" uuid="218a34f3-f0fe-43fa-abf1-3a7076072074"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="1" width="240" height="20" uuid="88f26d4f-1c94-4f9f-b9bb-847cc3287864"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="312" y="1" width="60" height="20" uuid="a06a091d-a68b-42eb-b370-13f89cc39590"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="374" y="1" width="79" height="20" uuid="2e09db8f-b0e9-49a8-88d9-575ade5e327c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="458" y="0" width="90" height="20" uuid="b96792b4-3436-4576-aea0-db165dae6297"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="105">
+			<line>
+				<reportElement x="9" y="82" width="136" height="1" uuid="e847ec50-ba0e-4564-85c6-3b4165d1c565"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="9" y="83" width="136" height="20" uuid="22308ef0-9eae-4a78-96a0-bbe2ed3b5f9d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<text><![CDATA[STORE KEEPER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="21" width="350" height="20" uuid="d47b9d54-db45-42a6-abcd-6441bae123ad"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<text><![CDATA[Receive above items in good condition.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="0" width="43" height="20" uuid="d41429c3-4d64-4b81-b8d3-7bf4ae023ae6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total     :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="461" y="0" width="90" height="20" uuid="4a2524c3-8604-4405-a768-8f829f832177"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{amount_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="459" y="18" width="95" height="1" uuid="4b7c7bee-2ca3-45ce-8cc1-4d1fbae8efe8"/>
+			</line>
+			<line>
+				<reportElement x="459" y="20" width="95" height="1" uuid="42306317-ba3d-4441-bde3-b3a1ec2e8cb8"/>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>

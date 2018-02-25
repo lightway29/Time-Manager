@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<root>
+    <serverConfig>        
+    <server>1</server>
+    <port>1099</port>
+    <ip>127.0.0.1</ip>    
+    </serverConfig>
+</root>

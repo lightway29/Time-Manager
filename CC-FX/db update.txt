@@ -1,0 +1,3 @@
+ALTER TABLE `iics_dl`.`external_return_note` 
+DROP COLUMN `return_note_type`;
+

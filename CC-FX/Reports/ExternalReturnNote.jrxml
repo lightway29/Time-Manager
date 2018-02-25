@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExternalReturnNote" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d79c846e-f00c-494b-82e5-012729fed56d">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="336"/>
+	<parameter name="returnId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select e.external_return_note_id,s.name as supplierName,e.approve_date,e.description,
+ei.item_id,ei.batch_no,ei.description as itemDes,ei.qty,
+i.item_name,u.name as storeKeeper
+from external_return_note e
+left join external_return_note_item ei
+on e.external_return_note_id=ei.external_return_note_id
+left join item i
+on i.item_id=ei.item_id
+left join item_sub isub
+on isub.item_id=ei.item_id and isub.batch_no=ei.batch_no
+left join supplier s
+on s.sid=e.supplier_id
+inner join user u
+on u.eid=e.approve_user_id
+where e.external_return_note_id=$P{returnId}]]>
+	</queryString>
+	<field name="external_return_note_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="supplierName" class="java.lang.String"/>
+	<field name="approve_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="batch_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="itemDes" class="java.lang.String"/>
+	<field name="qty" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="storeKeeper" class="java.lang.String"/>
+	<variable name="No" class="java.lang.Number">
+		<variableExpression><![CDATA[$V{No}+1]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band height="802" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="31" y="119" width="70" height="301" backcolor="#FFFFFF" uuid="e6891471-ca7f-43a7-8152-9930375e8769"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="119" width="555" height="561" uuid="ed4eff86-4038-42e2-a084-3698897b4249"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="393" y="119" width="49" height="561" uuid="bc8a7bb2-5719-45c3-8bdf-b3fca7301bac"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="61" y="119" width="66" height="561" backcolor="#FFFFFF" uuid="2f105788-fce6-4e6f-aa59-53179d1b8579"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="119" width="555" height="20" uuid="5b5850ea-bad3-449d-a060-7a9b18833792"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="312" y="119" width="81" height="561" uuid="18d7ec8d-4f8b-4d35-a308-6af60296e4a2"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</background>
+	<title>
+		<band height="155" splitType="Stretch">
+			<staticText>
+				<reportElement x="303" y="70" width="76" height="20" uuid="77abd46e-e07a-444f-9c03-712b850346fc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="90" width="109" height="20" uuid="18af54ee-02e6-4783-87c1-4c3ee02029de"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="412" y="70" width="135" height="20" uuid="bc7e3910-540c-4736-80ba-5bfeccb4e7a1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approve_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="412" y="90" width="134" height="20" uuid="cba61ae8-32e3-44eb-b4dc-433f027fc87c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="303" y="30" width="109" height="20" uuid="25f25db2-b0ac-4687-b958-ae8aada405a1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Return Note ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="30" width="13" height="20" uuid="6dff12c6-921e-4234-a217-c02b8d8c3549"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="70" width="13" height="20" uuid="44ab860f-161b-4386-9e69-69709e9f0da0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="50" width="13" height="20" uuid="3085d131-f64f-4117-b02e-e054431d56e3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="50" width="109" height="20" uuid="f45cba54-489a-4cae-aa2b-e70d33729517"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supplier Name]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="412" y="30" width="135" height="20" uuid="aef335e7-f9af-4370-a871-78262e7a79be"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{external_return_note_id}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="412" y="50" width="135" height="20" uuid="abe9200b-9ccd-4cd5-9b1e-39f7cae3f761"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{supplierName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="61" width="289" height="52" uuid="fba56c95-1c19-42e3-bf1c-55a042a152b6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[477, Nawala Road, Rajagiriya, Sri Lanaka
+Tel : 0112877454 Fax:
+e-mail: d-kitchen@delanka.com
+VAT REG No. 114407267-7000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="9" width="539" height="20" uuid="72570ec7-011d-4c5a-8a9a-498dd7091ede"/>
+				<textElement textAlignment="Center">
+					<font fontName="Segoe UI Symbol" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Return Note]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="90" width="13" height="20" uuid="b60276ff-33a2-4bf3-8878-4ac1067dcbbd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="24" width="291" height="57" forecolor="#0099CC" uuid="61f2c924-c653-4ee4-85e3-9e97710c8980"/>
+				<textElement>
+					<font fontName="Segoe UI Symbol" size="16" isBold="true" isItalic="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Delanka ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="29" width="291" height="57" forecolor="#000000" uuid="a7674068-c1b9-4c1a-a891-ea860fd46947"/>
+				<textElement>
+					<font fontName="Segoe UI Symbol" size="12" isBold="true" isItalic="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[                  Hotel Catering Equipments &
+Service Supply (PVT) Ltd.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="130" width="109" height="20" uuid="088b9ec1-a3e1-465a-b140-23f9eb654ea9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Print Time]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="412" y="130" width="134" height="20" uuid="bfe42146-ee47-4376-a0a0-9337a82338cf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="397" y="110" width="13" height="20" uuid="3338434a-34b9-4a7d-8eb2-87fe0149104d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="110" width="76" height="20" uuid="fabe4168-79b0-4b3b-974c-efb4103b8ff4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Print Date ]]></text>
+			</staticText>
+			<textField pattern="h:mm a">
+				<reportElement x="412" y="110" width="135" height="20" uuid="ed0729d4-b01c-4b10-957d-e37bb22b8811"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="397" y="130" width="13" height="20" uuid="32b17157-7742-402a-b85d-b2c56b3e511a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="0" width="59" height="19" uuid="ad761b1b-8847-4ff0-a4df-ea1688eb05af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="0" width="184" height="19" uuid="ddaa97a1-8ebb-4b0c-b97f-0202f125cfdc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="0" width="81" height="19" uuid="b3348c65-ca69-43be-8ca8-fe2d0cd5aa83"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Batch No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="393" y="0" width="47" height="19" uuid="57211b7f-03f7-4ca1-9b2c-53f3d783f757"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="112" height="19" uuid="a9f2cd2f-bc94-4fbb-bbd0-ae6fb94e5e49"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Return Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="1" width="66" height="19" uuid="38f301e3-ef6f-4820-8851-176231acc227"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item ID]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="1" width="58" height="20" uuid="218a34f3-f0fe-43fa-abf1-3a7076072074"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="1" width="182" height="20" uuid="88f26d4f-1c94-4f9f-b9bb-847cc3287864"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement x="312" y="1" width="81" height="20" uuid="a06a091d-a68b-42eb-b370-13f89cc39590"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{batch_no}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement isPrintRepeatedValues="false" x="393" y="1" width="47" height="20" uuid="2e09db8f-b0e9-49a8-88d9-575ade5e327c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="442" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="b96792b4-3436-4576-aea0-db165dae6297"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemDes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="1" width="64" height="20" uuid="0fc2c7a5-59be-4a74-a9b0-6da2ee5bdfe3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Segoe UI Symbol"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item_id}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="105">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="8" y="50" width="197" height="20" isPrintWhenDetailOverflows="true" uuid="c35c736e-9140-437b-8d5a-8d8648279390"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{storeKeeper}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="71" width="197" height="20" uuid="e06d22a0-f195-4e25-9eee-835dd56c1521"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[STORE KEEPER]]></text>
+			</staticText>
+			<line>
+				<reportElement x="8" y="69" width="197" height="1" uuid="73c7e575-5666-4ecc-b27d-956dd53f670c"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>
