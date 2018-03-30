@@ -131,8 +131,8 @@ public class CCSHome extends Application implements HomeCallback {
                 "/com/saiton/ccs/res/img-external-return-note.png",
                 FxHome.HOME_PAGE,
                 e -> FxmlUiLauncher.launchOnNewStage(
-                        "/com/saiton/ccs/report/ReportGenerator.fxml",
-                        "Report Generator"));
+                        "/com/saiton/ccs/base/ClassRegistration.fxml",
+                        "Class Registration"));
         
         home.createTileButton("Stock Report",
                 TileColors.TILE_COLOR_AQUAMARINE,
@@ -322,21 +322,7 @@ public class CCSHome extends Application implements HomeCallback {
         //            }
         //        });
         //        //-----------------------------------------------------------------  
-        //            [used]home.createTileButton("UI Title Here", TileColors.TILE_COLOR_CYAN, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            [used]home.createTileButton("UI Title Here", TileColors.TILE_COLOR_DARKCYAN, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            [used]home.createTileButton("UI Title Here", TileColors.TILE_COLOR_DARKORANGE, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_DEEPPINK, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_DODGERBLUE, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_GOLD, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_LAWNGREEN, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_MAGENTA, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_SPRINGGREEN, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_YELLOW, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_PLUM, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_TURQUOISE, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_PALETURQUOISE, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //            home.createTileButton("UI Title Here", TileColors.TILE_COLOR_PALEGREEN, "/com/saiton/ihm/res/img-hall.png", FxHome.HOME_PAGE, null);
-        //</editor-fold>
+//</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Registration">
         home.createTileButton("Invoice",
                 TileColors.TILE_COLOR_AQUAMARINE,
