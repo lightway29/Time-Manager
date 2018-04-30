@@ -144,9 +144,10 @@ CREATE TABLE `class_time_table_reg` (
   PRIMARY KEY (`id`),
   KEY `fk1_class_group_idx` (`class_group_id`),
   KEY `fk2_mon_idx` (`mon`),
-  CONSTRAINT `fk1_class_time_table` FOREIGN KEY (`id`) REFERENCES `class_time_table` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk2_group` FOREIGN KEY (`class_group_id`) REFERENCES `class_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  KEY `fk3_time_table_idx` (`class_time_table_id`),
+  CONSTRAINT `fk2_group` FOREIGN KEY (`class_group_id`) REFERENCES `class_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk3_time_table` FOREIGN KEY (`class_time_table_id`) REFERENCES `class_time_table` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +156,7 @@ CREATE TABLE `class_time_table_reg` (
 
 LOCK TABLES `class_time_table_reg` WRITE;
 /*!40000 ALTER TABLE `class_time_table_reg` DISABLE KEYS */;
-INSERT INTO `class_time_table_reg` VALUES (1,1,1,'English','Maths','Science','Lit','Science','1A','1'),(2,1,1,'Maths','Science','Lit','Maths','Science','1A','2');
+INSERT INTO `class_time_table_reg` VALUES (1,1,1,'English','Maths','Science','Lit','Science','1A','1'),(2,1,1,'Maths','Science','Lit','Maths','Science','1A','2'),(3,1,1,'Science','Lit','Tamil','Maths','Tamil','1A','3'),(4,1,1,'Maths','Science','Tamil','English','Tamil','1A','4'),(5,1,1,'Sinhala','Lit','Tamil','English','Science','1A','5');
 /*!40000 ALTER TABLE `class_time_table_reg` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1812,4 +1813,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-30 23:26:19
+-- Dump completed on 2018-04-30 23:46:20
