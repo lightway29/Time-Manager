@@ -28,6 +28,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -82,6 +84,8 @@ public class ClassRegistrationController extends AnchorPane implements
     private boolean update = false;
     private boolean delete = false;
     private boolean view = false;
+    @FXML
+    private Button btnRemoveClass;
 
     //<editor-fold defaultstate="collapsed" desc="Methods">
     /**
@@ -422,6 +426,30 @@ public class ClassRegistrationController extends AnchorPane implements
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="ActionEvents">
+    
+    @FXML
+    private void btnRemoveClassOnAction(ActionEvent event) {
+       boolean isDeleted = classRegistrationDAO.deleteClass(
+                                    cmbClass.getValue());
+
+                            if (isDeleted == true) {
+
+                                mb.ShowMessage(stage,
+                                        ErrorMessages.SuccesfullyDeleted,
+                                        MessageBoxTitle.INFORMATION.toString(),
+                                        MessageBox.MessageIcon.MSG_ICON_SUCCESS,
+                                        MessageBox.MessageType.MSG_OK);
+                                loadClassToCombobox();
+                                loadSubGroupToCombobox();
+
+                            } else {
+                                mb.ShowMessage(stage, ErrorMessages.Error,
+                                        MessageBoxTitle.ERROR.toString(),
+                                        MessageBox.MessageIcon.MSG_ICON_FAIL,
+                                        MessageBox.MessageType.MSG_OK);
+                            }
+    }
+
     @FXML
     private void cmbSubGroupOnAction(ActionEvent event) {
 
@@ -552,4 +580,12 @@ public class ClassRegistrationController extends AnchorPane implements
     }
 //</editor-fold>
 
+    @FXML
+    void cmbClassOnKeyReleased(KeyEvent event) {
+         if (event.getCode() == KeyCode.DELETE) {
+             System.out.println("Delete executed...");
+         }
+    }
+
+   
 }

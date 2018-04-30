@@ -340,4 +340,43 @@ public class ClassRegistrationDAO {
         return subGroupId;
 
     }
+      
+         public boolean deleteClass(String classTitle) {
+
+        String encodedClassTitle = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                classTitle);
+
+        if (star.con == null) {
+            log.error("Databse connection failiure.");
+            return false;
+        } else {
+            try {
+
+                String query
+                        = "DELETE FROM class WHERE title = ?";
+
+                PreparedStatement pre = star.con.prepareStatement(query);
+                pre.setString(1, encodedClassTitle);
+
+                int val = pre.executeUpdate();
+                if (val == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } catch (NullPointerException | SQLException e) {
+                if (e instanceof NullPointerException) {
+                    log.error("Exception tag --> " + "Empty entry passed");
+                } else if (e instanceof SQLException) {
+                    log.error("Exception tag --> " + "Invalid sql statement "
+                            + e.getMessage());
+                }
+                return false;
+            } catch (Exception e) {
+                log.error("Exception tag --> " + "Error");
+                return false;
+            }
+        }
+    }
 }

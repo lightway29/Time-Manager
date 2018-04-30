@@ -34,12 +34,21 @@
                         <HBox id="HBox" alignment="CENTER" spacing="5.0" GridPane.columnSpan="5" GridPane.rowIndex="1">
                            <children>
                               <Label fx:id="lblItemId11" prefWidth="80.0" text="Class" />
-                              <ComboBox fx:id="cmbClass" onAction="#cmbClassOnAction" prefHeight="27.0" prefWidth="220.0" />
+                              <ComboBox fx:id="cmbClass" onAction="#cmbClassOnAction" onKeyReleased="#cmbClassOnKeyReleased" prefHeight="27.0" prefWidth="190.0" />
                               <Button id="btnSearch" fx:id="btnAddClass" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxWidth="-Infinity" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#btnAddClassOnAction" prefHeight="24.0" prefWidth="24.0" text="">
                                  <graphic>
                                     <ImageView fitHeight="10.000000178813929" fitWidth="13.333333969116211" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../res/img-add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button id="btnSearch" fx:id="btnRemoveClass" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxWidth="-Infinity" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#btnRemoveClassOnAction" prefHeight="24.0" prefWidth="24.0" text="">
+                                 <graphic>
+                                    <ImageView fitHeight="10.000000178813929" fitWidth="13.333333969116211" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../res/img-delete.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
