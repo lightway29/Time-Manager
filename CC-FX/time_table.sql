@@ -86,7 +86,6 @@ CREATE TABLE `class_section` (
   `total_no_of_periods` varchar(45) DEFAULT NULL,
   KEY `fk1_subject_idx` (`subject`),
   KEY `fk2_class_group_idx` (`class_group_id`),
-  CONSTRAINT `fk1_subject` FOREIGN KEY (`subject`) REFERENCES `subject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk2_class_group` FOREIGN KEY (`class_group_id`) REFERENCES `class_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -111,7 +110,7 @@ CREATE TABLE `class_time_table` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time_table_title` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,6 +119,7 @@ CREATE TABLE `class_time_table` (
 
 LOCK TABLES `class_time_table` WRITE;
 /*!40000 ALTER TABLE `class_time_table` DISABLE KEYS */;
+INSERT INTO `class_time_table` VALUES (1,'2018'),(2,'2019');
 /*!40000 ALTER TABLE `class_time_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,28 +132,21 @@ DROP TABLE IF EXISTS `class_time_table_reg`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `class_time_table_reg` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `class_time_table_id` varchar(45) DEFAULT NULL,
+  `class_time_table_id` int(11) DEFAULT NULL,
   `class_group_id` int(11) DEFAULT NULL,
-  `mon` int(11) DEFAULT NULL,
-  `tue` int(11) DEFAULT NULL,
-  `wed` int(11) DEFAULT NULL,
-  `thu` int(11) DEFAULT NULL,
-  `fri` int(11) DEFAULT NULL,
+  `mon` varchar(45) DEFAULT NULL,
+  `tue` varchar(45) DEFAULT NULL,
+  `wed` varchar(45) DEFAULT NULL,
+  `thu` varchar(45) DEFAULT NULL,
+  `fri` varchar(45) DEFAULT NULL,
+  `class_title` varchar(45) DEFAULT NULL,
+  `slot` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk1_class_group_idx` (`class_group_id`),
   KEY `fk2_mon_idx` (`mon`),
-  KEY `fk3_tue_idx` (`tue`),
-  KEY `fk4_wed_idx` (`wed`),
-  KEY `fk5_thu_idx` (`thu`),
-  KEY `fk6_fri_idx` (`fri`),
   CONSTRAINT `fk1_class_time_table` FOREIGN KEY (`id`) REFERENCES `class_time_table` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk2_mon` FOREIGN KEY (`mon`) REFERENCES `subject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk3_tue` FOREIGN KEY (`tue`) REFERENCES `subject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk4_wed` FOREIGN KEY (`wed`) REFERENCES `subject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk5_thu` FOREIGN KEY (`thu`) REFERENCES `subject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk6_fri` FOREIGN KEY (`fri`) REFERENCES `subject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk7_class_group` FOREIGN KEY (`class_group_id`) REFERENCES `class_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `fk2_group` FOREIGN KEY (`class_group_id`) REFERENCES `class_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,6 +155,7 @@ CREATE TABLE `class_time_table_reg` (
 
 LOCK TABLES `class_time_table_reg` WRITE;
 /*!40000 ALTER TABLE `class_time_table_reg` DISABLE KEYS */;
+INSERT INTO `class_time_table_reg` VALUES (1,1,1,'English','Maths','Science','Lit','Science','1A','1'),(2,1,1,'Maths','Science','Lit','Maths','Science','1A','2');
 /*!40000 ALTER TABLE `class_time_table_reg` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1515,9 +1509,9 @@ DROP TABLE IF EXISTS `subject`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subject` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subject` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL,
+  `subject` varchar(45) NOT NULL,
+  PRIMARY KEY (`subject`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1818,4 +1812,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-30 21:31:17
+-- Dump completed on 2018-04-30 23:26:19
