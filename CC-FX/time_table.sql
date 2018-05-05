@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `ccs_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `ccs_db`;
--- MySQL dump 10.13  Distrib 5.6.19, for osx10.7 (i386)
+-- MySQL dump 10.13  Distrib 5.6.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: ccs_db
+-- Host: 127.0.0.1    Database: ccs_db
 -- ------------------------------------------------------
--- Server version	5.6.21
+-- Server version	5.6.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -141,13 +141,14 @@ CREATE TABLE `class_time_table_reg` (
   `fri` varchar(45) DEFAULT NULL,
   `class_title` varchar(45) DEFAULT NULL,
   `slot` varchar(45) DEFAULT NULL,
+  `time` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk1_class_group_idx` (`class_group_id`),
   KEY `fk2_mon_idx` (`mon`),
   KEY `fk3_time_table_idx` (`class_time_table_id`),
   CONSTRAINT `fk2_group` FOREIGN KEY (`class_group_id`) REFERENCES `class_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk3_time_table` FOREIGN KEY (`class_time_table_id`) REFERENCES `class_time_table` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +157,7 @@ CREATE TABLE `class_time_table_reg` (
 
 LOCK TABLES `class_time_table_reg` WRITE;
 /*!40000 ALTER TABLE `class_time_table_reg` DISABLE KEYS */;
-INSERT INTO `class_time_table_reg` VALUES (1,1,1,'English','Maths','Science','Lit','Science','1A','1'),(2,1,1,'Maths','Science','Lit','Maths','Science','1A','2'),(3,1,1,'Science','Lit','Tamil','Maths','Tamil','1A','3'),(4,1,1,'Maths','Science','Tamil','English','Tamil','1A','4'),(5,1,1,'Sinhala','Lit','Tamil','English','Science','1A','5');
+INSERT INTO `class_time_table_reg` VALUES (1,1,1,'English','Maths','Science','Lit','Science','1A','1','7:50 a.m. - 8:20 a.m.'),(2,1,1,'Maths','Science','Lit','Maths','Science','1A','2','8:20 a.m. - 8:50 a.m.'),(3,1,1,'Science','Lit','Tamil','Maths','Tamil','1A','3','8:50 a.m. - 9:20 a.m.'),(4,1,1,'Maths','Science','Tamil','English','Tamil','1A','4','9:20 a.m. - 9:50 a.m.'),(5,1,1,'Sinhala','Lit','Tamil','English','Science','1A','5','9:50 a.m. - 10:20 a.m.'),(6,1,1,'Science','Maths','Science','Science','Tamil','1A','6','10:20 a.m. - 10:50 a.m.'),(7,1,1,'English','Science','Science','Lit','Science','1A','7','11:20 a.m. - 11:50 a.m.'),(8,1,1,'English','Maths','English','English','Lit','1A','8','11:50 a.m. - 12:20 a.m.');
 /*!40000 ALTER TABLE `class_time_table_reg` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1813,4 +1814,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-30 23:46:20
+-- Dump completed on 2018-05-04 23:49:01
