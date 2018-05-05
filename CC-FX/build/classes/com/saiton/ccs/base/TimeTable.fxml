@@ -10,7 +10,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" minHeight="600.0" minWidth="703.0" prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.saiton.ccs.base.UserRegistrationController">
+<AnchorPane id="AnchorPane" minHeight="600.0" minWidth="703.0" prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.saiton.ccs.base.TimeTableController">
     <children>
         <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="703.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -18,13 +18,22 @@
                     <children>
                         <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="12" GridPane.rowIndex="2">
+                                <HBox id="HBox" alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="304.0" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="2">
                                     <children>
                                         <Label minWidth="-Infinity" prefHeight="15.0" prefWidth="89.0" text="Label">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></Label>
-                              <PasswordField fx:id="txtLabel" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onKeyReleased="#txtPasswordOnKeyReleased" prefWidth="211.0" promptText="Label" />
+                              <TextField fx:id="txtLabel" prefHeight="27.0" prefWidth="210.0" />
+                              <Button id="btnSearch" fx:id="btnSearchCustomer" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#btnSearchCustomerOnAction" prefHeight="24.0" prefWidth="24.0" text="">
+                                 <graphic>
+                                    <ImageView fitHeight="10.000000178813929" fitWidth="13.333333969116211" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../res/img-search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                                     </children>
                            <GridPane.margin>
                               <Insets left="25.0" top="45.0" />
@@ -109,7 +118,7 @@
                                 </HBox>
                                 <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="14" GridPane.columnSpan="8" GridPane.rowIndex="6">
                                     <children>
-                                        <Label prefHeight="17.0" prefWidth="110.0" text="Teacher Interchange" />
+                                        <Label prefHeight="17.0" prefWidth="110.0" text="Teacher" />
                               <ComboBox fx:id="cmbTimeInterchange" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
@@ -124,12 +133,12 @@
                               <Insets left="25.0" top="35.0" />
                            </GridPane.margin>
                                 </HBox>
-                                <TableView fx:id="tvPermission" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="132.0" prefWidth="678.0" GridPane.columnIndex="1" GridPane.columnSpan="18" GridPane.rowIndex="11" GridPane.rowSpan="7">
+                                <TableView fx:id="tvtime" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="132.0" prefWidth="678.0" GridPane.columnIndex="1" GridPane.columnSpan="18" GridPane.rowIndex="11" GridPane.rowSpan="7">
                                     <columns>
-                                        <TableColumn fx:id="tcFeature" editable="false" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="196.0" text="Day" />
-                              <TableColumn fx:id="tcView" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="136.0" sortable="false" text="Slot" />
-                                        <TableColumn fx:id="tcInsert" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="150.0" sortable="false" text="Subject" />
-                                        <TableColumn fx:id="tcUpdate" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="200.0" sortable="false" text="Teacher Interchange" />
+                                        <TableColumn fx:id="tcDay" editable="false" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="196.0" text="Day" />
+                              <TableColumn fx:id="tcSlot" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="136.0" sortable="false" text="Slot" />
+                                        <TableColumn fx:id="tcSubject" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="150.0" sortable="false" text="Subject" />
+                                        <TableColumn fx:id="tcTeacher" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="200.0" sortable="false" text="Teacher Interchange" />
                                     </columns>
                                     <GridPane.margin>
                                         <Insets top="30.0" />
@@ -155,7 +164,7 @@
                                                 </ImageView>
                                             </graphic>
                                         </Button>
-                                        <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#btnCancelOnAction" prefHeight="50.0" prefWidth="107.0" text="Cancel">
+                                        <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#btnCancelOnAction" prefHeight="50.0" prefWidth="117.0" text="Cancel">
                                             <graphic>
                                                 <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                                                     <image>
@@ -238,6 +247,8 @@
                         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="189.0" />
                         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="43.0" />
                         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="5.0" />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
