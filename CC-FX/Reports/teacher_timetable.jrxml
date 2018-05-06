@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="timetable_1st_half" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c82a289d-1c89-4659-8282-fae06b753fdf">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="class_teacher_timetable_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT c.*,t.teacher_name
+from class_teacher_timetable c
+inner join teacher t
+on t.id=c.teacher_id
+where c.class_teacher_timetable_id = $P{class_teacher_timetable_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="class_teacher_timetable_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="teacher_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="time_slot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monday" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tuesday" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="wednesday" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="thursday" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="friday" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="teacher_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="186" y="0" width="154" height="38" uuid="bf65c6b2-de08-4e20-93dd-9ad260f59b79"/>
+				<textElement verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Time Table Of]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="344" y="0" width="100" height="38" uuid="fb796427-f4a1-43a7-a7cd-cad9a976290d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{teacher_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement x="29" y="0" width="119" height="20" uuid="048ea2de-c250-4855-9f5d-364e8d7e58ec"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="0" width="78" height="20" uuid="71a707a8-d528-4dc0-a850-adeedb866c6e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="226" y="0" width="78" height="20" uuid="b5b50d53-67a7-4a5c-adf4-409f2e0d1bd0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="304" y="0" width="78" height="20" uuid="1cda66c3-1999-48d3-8405-dc46715432e9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="382" y="0" width="78" height="20" uuid="9360f923-e2ed-4cd9-ad0e-b5fa2c4b4b36"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="460" y="0" width="78" height="20" uuid="1f1e39e3-c21f-4a24-93ac-dab7a185507f"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="156" y="0" width="81" height="20" uuid="ee9c6c47-a2fc-4bc7-8652-cdadc9dd9cf1"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monday]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="0" width="81" height="20" uuid="076ddea5-2b89-43b4-aba1-22030ee12be8"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tuesday]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="0" width="81" height="20" uuid="ccaa3734-b142-44bc-a583-161e7f9b3257"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Wednesday]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="0" width="81" height="20" uuid="5031424b-83b9-4009-b22c-5eac996aa64c"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Thuresday]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="81" height="20" uuid="9e61f791-b00e-4706-9780-a46a2f86543c"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Friday]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="0" width="117" height="20" uuid="c896cdfb-0d9d-4665-a3d2-1806fe0048df"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Time]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<rectangle>
+				<reportElement x="29" y="0" width="119" height="20" uuid="5a010f31-9845-4e40-b320-29083cfe14aa"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="0" width="78" height="20" uuid="18dfb3f1-6474-4851-9a61-1e75e237db28"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="226" y="0" width="78" height="20" uuid="03e2958e-4c39-42e6-94b8-df10b7480f49"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="304" y="0" width="78" height="20" uuid="28f95599-0a02-4091-acde-61b36af82666"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="382" y="0" width="78" height="20" uuid="2af1f49e-8d07-4ddd-b569-1eb4395966cb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="460" y="0" width="78" height="20" uuid="1d48b4d5-17e5-48b1-8f7f-396597663cdc"/>
+			</rectangle>
+			<textField>
+				<reportElement x="156" y="0" width="81" height="20" uuid="9267429b-63dc-48f0-b085-3728f9af2de9"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{monday}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="0" width="81" height="20" uuid="d2b01a72-e46d-49d5-a51f-04424d6c113b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tuesday}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="318" y="0" width="81" height="20" uuid="68586a2e-6e75-44d2-9ba7-7c65a15b8bbd"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{wednesday}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="0" width="81" height="20" uuid="a7f93e77-a7c9-4dcc-80cb-1957cf0ec792"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{thursday}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="58" height="20" uuid="a99913ef-e630-47fc-b4f1-8c6937980d03"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{friday}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="0" width="109" height="20" uuid="185e0407-340c-453a-a6bf-f2d2d02f3c24"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{time_slot}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
