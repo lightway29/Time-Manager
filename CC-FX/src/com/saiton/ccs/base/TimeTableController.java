@@ -98,7 +98,6 @@ public class TimeTableController extends AnchorPane implements
     private boolean update = false;
     private boolean delete = false;
     private boolean view = false;
-    
 
     //<editor-fold defaultstate="collapsed" desc="Methods">
     /**
@@ -388,6 +387,53 @@ public class TimeTableController extends AnchorPane implements
 
     @FXML
     private void btnGenerateClassTimeTableOnAction(ActionEvent event) {
+
+        // Classes 1
+        // Subject all the subject go through
+        // Teacher selected teacher
+        ArrayList<String> classList = new ArrayList();
+        classList.add("5a");
+        classList.add("5b");
+        classList.add("6a");
+        classList.add("6b");
+        classList.add("7a");
+
+        ArrayList<String> dayList = new ArrayList();
+        dayList.add("Monday");
+        dayList.add("Tuesday");
+        dayList.add("Wednesday");
+        dayList.add("Thursday");
+        dayList.add("Friday");
+
+        ArrayList<String> subjectList = new ArrayList();
+        subjectList.add("English");
+        subjectList.add("Science");
+        subjectList.add("Maths");
+        subjectList.add("History");
+        subjectList.add("Sinhala");
+
+        System.out.println("Subjects size - " + subjectList.size());
+        for (String classItem : classList) {
+            System.out.println("----------------------");
+            System.out.println("Class - " + classItem);
+            System.out.println("----------------------");
+
+            for (String day : dayList) {
+                System.out.println("----------------------");
+                System.out.println("Day - " + day);
+                System.out.println("----------------------");
+
+                for (String subject : subjectList) {
+                    System.out.println("Subjects - " + subject);
+                }
+            }
+        }
+
+//        for each class {
+//                for 5 days{
+//                    for 8 periods{}
+//                }
+//                }        
     }
 
     @FXML
