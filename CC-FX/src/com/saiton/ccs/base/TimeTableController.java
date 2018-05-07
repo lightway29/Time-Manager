@@ -6,6 +6,7 @@
 package com.saiton.ccs.base;
 
 import com.saiton.ccs.basedao.ClassRegistrationDAO;
+import com.saiton.ccs.basedao.TimeTableDAO;
 import com.saiton.ccs.msgbox.MessageBox;
 import com.saiton.ccs.msgbox.SimpleMessageBoxFactory;
 import com.saiton.ccs.uihandle.ComponentControl;
@@ -91,6 +92,7 @@ public class TimeTableController extends AnchorPane implements
             "Male", "Female"
     );
     ClassRegistrationDAO classRegistrationDAO = new ClassRegistrationDAO();
+    TimeTableDAO timeTableDAO = new TimeTableDAO();
     private String userId;
     private String userName;
     private String userCategory;
@@ -387,45 +389,61 @@ public class TimeTableController extends AnchorPane implements
 
     @FXML
     private void btnGenerateClassTimeTableOnAction(ActionEvent event) {
-
+        
+        
+//        System.out.println("Slot for Art - "+timeTableDAO.isSlotAvailable("1", "mon",
+//                                "Art","1"));
+        
+        
         // Classes 1
         // Subject all the subject go through
         // Teacher selected teacher
-        ArrayList<String> classList = new ArrayList();
-        classList.add("5a");
-        classList.add("5b");
-        classList.add("6a");
-        classList.add("6b");
-        classList.add("7a");
+        ArrayList<String> classList = null;
+        classList = timeTableDAO.getClassGroupList();
 
         ArrayList<String> dayList = new ArrayList();
-        dayList.add("Monday");
-        dayList.add("Tuesday");
-        dayList.add("Wednesday");
-        dayList.add("Thursday");
-        dayList.add("Friday");
+        dayList.add("mon");
+        dayList.add("tue");
+        dayList.add("wed");
+        dayList.add("thu");
+        dayList.add("fri");
 
-        ArrayList<String> subjectList = new ArrayList();
-        subjectList.add("English");
-        subjectList.add("Science");
-        subjectList.add("Maths");
-        subjectList.add("History");
-        subjectList.add("Sinhala");
+        ArrayList<String> subjectList = null;
 
-        System.out.println("Subjects size - " + subjectList.size());
-        for (String classItem : classList) {
+        subjectList = timeTableDAO.getSubjectList();
+
+        for (int classIndex = 0; classIndex < classList.size(); classIndex++) {
             System.out.println("----------------------");
-            System.out.println("Class - " + classItem);
+            System.out.println("Class - " + classList.get(classIndex));
             System.out.println("----------------------");
 
-            for (String day : dayList) {
-                System.out.println("----------------------");
-                System.out.println("Day - " + day);
-                System.out.println("----------------------");
+            for (int dayIndex = 0; dayIndex < dayList.size(); dayIndex++) {
 
-                for (String subject : subjectList) {
-                    System.out.println("Subjects - " + subject);
+                for (int i = 1; i < 9; i++) {
+                    String subject = "";
+                    boolean isSubjectFound = false;
+
+                    for (int subjectIndex = 0; subjectIndex < subjectList.size();
+                            subjectIndex++) {
+
+                        if (timeTableDAO.isSlotAvailable("1", dayList.get(
+                                dayIndex),
+                                subjectList.get(subjectIndex),i+"")) {
+                            
+                            subject = subjectList.get(subjectIndex);
+                            subjectIndex = subjectList.size();
+                        }
+
+                    }
+                    
+                    System.out.println("Class - " + classList.get(classIndex)
+                            + " Subject - " + subject
+                            + " Day - " + dayList.get(dayIndex)
+                            + " Slot availability - " + i);
+                    subject = "";
+
                 }
+
             }
         }
 
@@ -433,7 +451,8 @@ public class TimeTableController extends AnchorPane implements
 //                for 5 days{
 //                    for 8 periods{}
 //                }
-//                }        
+//                }     
+                
     }
 
     @FXML
