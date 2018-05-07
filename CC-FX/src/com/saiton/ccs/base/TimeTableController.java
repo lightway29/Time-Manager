@@ -9,7 +9,9 @@ import com.saiton.ccs.basedao.ClassRegistrationDAO;
 import com.saiton.ccs.basedao.TimeTableDAO;
 import com.saiton.ccs.msgbox.MessageBox;
 import com.saiton.ccs.msgbox.SimpleMessageBoxFactory;
+import com.saiton.ccs.popup.TimeTablePopup;
 import com.saiton.ccs.uihandle.ComponentControl;
+import com.saiton.ccs.uihandle.ReportGenerator;
 import com.saiton.ccs.uihandle.StagePassable;
 import com.saiton.ccs.uihandle.UiMode;
 import com.saiton.ccs.util.InputDialog;
@@ -17,9 +19,12 @@ import com.saiton.ccs.validations.ErrorMessages;
 import com.saiton.ccs.validations.FormatAndValidate;
 import com.saiton.ccs.validations.MessageBoxTitle;
 import com.saiton.ccs.validations.Validatable;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,16 +38,19 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 
 /**
  * FXML Controller class
- *
  * @author lightway
  */
+
 public class TimeTableController extends AnchorPane implements
         Initializable,
         Validatable, StagePassable {
@@ -51,21 +59,21 @@ public class TimeTableController extends AnchorPane implements
     @FXML
     private ComboBox<String> cmbClass;
     @FXML
-    private ComboBox<String> cmbTitle2;
-    @FXML
     private ComboBox<String> cmbSlot;
     @FXML
     private ComboBox<String> cmbDay;
     @FXML
-    private ComboBox<String> cmbTimeInterchange;
+    private ComboBox<String> cmbSubject;
     @FXML
-    private TableColumn<?, ?> tcDay;
+    private ComboBox<String> cmbTeacher;
     @FXML
-    private TableColumn<?, ?> tcSlot;
+    private TableColumn<Timetable, String> tcDay;
     @FXML
-    private TableColumn<?, ?> tcSubject;
+    private TableColumn<Timetable, String> tcSlot;
     @FXML
-    private TableColumn<?, ?> tcTeacher;
+    private TableColumn<Timetable, String> tcSubject;
+    @FXML
+    private TableColumn<Timetable, String> tcTeacher;
     @FXML
     private Button btnGenerateClassTimeTable;
     @FXML
@@ -79,13 +87,15 @@ public class TimeTableController extends AnchorPane implements
     @FXML
     private Button btnSearchCustomer;
     @FXML
-    private TableView<?> tvtime;
+    private TableView<Timetable> tvtime;
 
     //</editor-fold>
     private final FormatAndValidate fav = new FormatAndValidate();
     private ComponentControl componentControl = new ComponentControl();
     private MessageBox mb;
     private Stage stage;
+    private ObservableList TableTimetableData = FXCollections.
+            observableArrayList();
     private ObservableList<String> classData;
     private ObservableList<String> classSubGroupData;
     ObservableList<String> genderList = FXCollections.observableArrayList(
@@ -93,6 +103,7 @@ public class TimeTableController extends AnchorPane implements
     );
     ClassRegistrationDAO classRegistrationDAO = new ClassRegistrationDAO();
     TimeTableDAO timeTableDAO = new TimeTableDAO();
+    Timetable timeTable = new Timetable();
     private String userId;
     private String userName;
     private String userCategory;
@@ -101,13 +112,52 @@ public class TimeTableController extends AnchorPane implements
     private boolean delete = false;
     private boolean view = false;
 
+    //Timetable Popup
+    private TableView timetableIdTable = new TableView();
+    private TimeTablePopup timetableIdPopup = new TimeTablePopup();
+    private ObservableList timetableData = FXCollections.
+            observableArrayList();
+    private PopOver timetableIdPop;
+    String timetableId = "";
+    ObservableList<String> dayList = FXCollections.observableArrayList(
+            "Mon", "Tue", "Wed", "Thu", "Fri"
+    );
+
+    ObservableList<String> slotList = FXCollections.observableArrayList(
+            "1", "2", "3", "4", "5", "6", "7", "8"
+    );
+
     //<editor-fold defaultstate="collapsed" desc="Methods">
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mb = SimpleMessageBoxFactory.createMessageBox();
+        loadClassToCombobox();
+        loadSubjectToCombobox();
+        loadTeacherToCombobox();
+        loadGrnData();
+
+        cmbDay.setItems(dayList);
+        cmbDay.getSelectionModel().selectFirst();
+        cmbSlot.setItems(slotList);
+        cmbSlot.getSelectionModel().selectFirst();
+
+        tcDay.setCellValueFactory(new PropertyValueFactory<Timetable, String>(
+                "colDay"));
+        tcSlot.setCellValueFactory(
+                new PropertyValueFactory<Timetable, String>(
+                        "colSlot"));
+        tcSubject.setCellValueFactory(
+                new PropertyValueFactory<Timetable, String>(
+                        "colSubject"));
+        tcTeacher.setCellValueFactory(
+                new PropertyValueFactory<Timetable, String>(
+                        "colTeacherIncharge"));
+
+        tvtime.setItems(TableTimetableData);
     }
 
     @Override
@@ -115,6 +165,56 @@ public class TimeTableController extends AnchorPane implements
 
         this.stage = stage;
         setUserAccessLevel();
+
+        //CustomerId popup------------------------
+        timetableIdTable = timetableIdPopup.tableViewLoader(timetableData);
+
+        timetableIdTable.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
+                try {
+                    TimeTablePopup p = null;
+                    p = (TimeTablePopup) timetableIdTable.getSelectionModel().
+                            getSelectedItem();
+                    //clearInput();
+
+                    if (p.getColTimetableId() != null) {
+                        txtLabel.setText(p.getColTitle());
+                        timetableId = p.getColTimetableId();
+
+                    }
+
+                } catch (NullPointerException n) {
+
+                }
+
+                timetableIdPop.hide();
+                validatorInitialization();
+
+            }
+
+        });
+
+        timetableIdTable.setOnMousePressed(e -> {
+
+            if (e.getButton() == MouseButton.SECONDARY) {
+
+                timetableIdPop.hide();
+                validatorInitialization();
+
+            }
+
+        });
+
+        timetableIdPop = new PopOver(timetableIdTable);
+
+        stage.setOnCloseRequest(e -> {
+
+            if (timetableIdPop.isShowing()) {
+                e.consume();
+                timetableIdPop.hide();
+
+            }
+        });
 
     }
 
@@ -389,12 +489,9 @@ public class TimeTableController extends AnchorPane implements
 
     @FXML
     private void btnGenerateClassTimeTableOnAction(ActionEvent event) {
-        
-        
+
 //        System.out.println("Slot for Art - "+timeTableDAO.isSlotAvailable("1", "mon",
 //                                "Art","1"));
-        
-        
         // Classes 1
         // Subject all the subject go through
         // Teacher selected teacher
@@ -428,14 +525,14 @@ public class TimeTableController extends AnchorPane implements
 
                         if (timeTableDAO.isSlotAvailable("1", dayList.get(
                                 dayIndex),
-                                subjectList.get(subjectIndex),i+"")) {
-                            
+                                subjectList.get(subjectIndex), i + "")) {
+
                             subject = subjectList.get(subjectIndex);
                             subjectIndex = subjectList.size();
                         }
 
                     }
-                    
+
                     System.out.println("Class - " + classList.get(classIndex)
                             + " Subject - " + subject
                             + " Day - " + dayList.get(dayIndex)
@@ -446,13 +543,39 @@ public class TimeTableController extends AnchorPane implements
 
             }
         }
+        
+    /*
+         //<editor-fold defaultstate="collapsed" desc="Current Print Code">
+        HashMap paramOne = new HashMap();
+        paramOne.put("class_timetable_id", "1");
+        paramOne.put("class_no", "1A");
 
-//        for each class {
-//                for 5 days{
-//                    for 8 periods{}
-//                }
-//                }     
-                
+        File file
+                = new File(
+                        ".//Reports//timetable_1st_half.jasper");
+        String imgOne = file.getAbsolutePath();
+        ReportGenerator report = new ReportGenerator(imgOne, paramOne);
+
+        report.setVisible(true);
+
+         //----------------------
+        HashMap param = new HashMap();
+        param.put("class_teacher_timetable_id", "1");
+
+        File fileOne
+                = new File(
+                        ".//Reports//teacher_timetable.jasper");
+        String img = fileOne.getAbsolutePath();
+        ReportGenerator r = new ReportGenerator(img, param);
+
+        r.setVisible(true);
+
+         //            mb.ShowMessage(stage, ErrorMessages.SuccesfullyCreated,
+        //                    MessageBoxTitle.INFORMATION.toString(),
+        //                    MessageBox.MessageIcon.MSG_ICON_SUCCESS,
+        //                    MessageBox.MessageType.MSG_OK);
+        //</editor-fold>
+        */
     }
 
     @FXML
@@ -470,6 +593,179 @@ public class TimeTableController extends AnchorPane implements
 
     @FXML
     private void btnSearchCustomerOnAction(ActionEvent event) {
+
+        timetableDataLoader(txtLabel.getText());
+        timetableIdTable.setItems(timetableData);
+        if (!timetableData.isEmpty()) {
+            timetableIdPop.show(btnSearchCustomer);
+        }
+
+    }
+
+    private void timetableDataLoader(String keyword) {
+
+        timetableData.clear();
+        ArrayList<ArrayList<String>> itemInfo
+                = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> list = timeTableDAO.
+                searchTimetableDetails(keyword);
+
+        if (list != null) {
+
+            for (int i = 0; i < list.size(); i++) {
+
+                itemInfo.add(list.get(i));
+            }
+
+            if (itemInfo != null && itemInfo.size() > 0) {
+                for (int i = 0; i < itemInfo.size(); i++) {
+
+                    timetableIdPopup = new TimeTablePopup();
+                    timetableIdPopup.colTimetableId.setValue(itemInfo.get(i).
+                            get(0));
+                    timetableIdPopup.colTitle.setValue(itemInfo.get(i).
+                            get(1));
+
+                    timetableData.add(timetableIdPopup);
+                }
+            }
+
+        }
+
+    }
+
+    private void loadClassToCombobox() {
+
+        cmbClass.setItems(null);
+        ArrayList<String> classList = null;
+        classList = classRegistrationDAO.loadClass();
+        if (classList != null) {
+            try {
+                ObservableList<String> List = FXCollections.observableArrayList(
+                        classList);
+                cmbClass.setItems(List);
+                cmbClass.setValue(List.get(0));
+            } catch (Exception e) {
+
+            }
+
+        }
+
+    }
+
+    private void loadSubjectToCombobox() {
+
+        cmbSubject.setItems(null);
+        ArrayList<String> classList = null;
+        classList = timeTableDAO.loadSubject();
+        if (classList != null) {
+            try {
+                ObservableList<String> List = FXCollections.observableArrayList(
+                        classList);
+                cmbSubject.setItems(List);
+                cmbSubject.setValue(List.get(0));
+            } catch (Exception e) {
+
+            }
+
+        }
+
+    }
+    
+     private void loadGrnData() {
+
+        TableTimetableData.clear();
+
+        ArrayList<ArrayList<String>> additionalItemInfo
+                = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> list = timeTableDAO.
+                getTableInfo("1");
+
+        if (list != null) {
+
+            for (int i = 0; i < list.size(); i++) {
+                
+                additionalItemInfo.add(list.get(i));
+            }
+
+            if (additionalItemInfo != null && additionalItemInfo.size()
+                    > 0) {
+                for (int i = 0; i < additionalItemInfo.size(); i++) {
+
+                    timeTable = new Timetable();
+                    System.out.println("Table loading...");
+                    timeTable.colDay.
+                            setValue(additionalItemInfo.get(i).get(0));
+                    timeTable.colSlot.setValue(additionalItemInfo.get(
+                            i).
+                            get(1));
+                    timeTable.colSubject.setValue(additionalItemInfo.get(i).
+                            get(2));
+                    timeTable.colTeacher.setValue(additionalItemInfo.
+                            get(i).
+                            get(3));
+                    
+                    timetableData.add(timeTable);
+                }
+            }
+        } else {
+            mb.ShowMessage(stage, ErrorMessages.InvalidEvent, "Error",
+                    MessageBox.MessageIcon.MSG_ICON_FAIL,
+                    MessageBox.MessageType.MSG_OK);
+
+        }
+
+    }
+
+
+    private void loadTeacherToCombobox() {
+
+        cmbTeacher.setItems(null);
+        ArrayList<String> classList = null;
+        classList = timeTableDAO.loadTeacher();
+        if (classList != null) {
+            try {
+                ObservableList<String> List = FXCollections.observableArrayList(
+                        classList);
+                cmbTeacher.setItems(List);
+                cmbTeacher.setValue(List.get(0));
+            } catch (Exception e) {
+
+            }
+
+        }
+    }
+
+   
+    public class Timetable {
+
+        public SimpleStringProperty colDay = new SimpleStringProperty(
+                "tcDay");
+        public SimpleStringProperty colSlot = new SimpleStringProperty(
+                "tcSlot");
+        public SimpleStringProperty colSubject
+                = new SimpleStringProperty(
+                        "tcSubject");
+        public SimpleStringProperty colTeacher
+                = new SimpleStringProperty(
+                        "tcTeacher");
+
+        public String getColDay() {
+            return colDay.get();
+        }
+
+        public String getColSlot() {
+            return colSlot.get();
+        }
+
+        public String getColSubject() {
+            return colSubject.get();
+        }
+
+        public String getColTeacherIncharge() {
+            return colTeacher.get();
+        }
+
     }
 
 }

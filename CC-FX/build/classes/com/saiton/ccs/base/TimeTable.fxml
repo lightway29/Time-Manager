@@ -45,15 +45,7 @@
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></Label>
-                                        <ComboBox fx:id="cmbClass" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                                            <items>
-                                                <FXCollections fx:factory="observableArrayList">
-                                                    <String fx:value="Mr." />
-                                                    <String fx:value="Mrs." />
-                                                    <String fx:value="Ms." />
-                                                </FXCollections>
-                                            </items>
-                                        </ComboBox>
+                              <ComboBox fx:id="cmbClass" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
                                     </children>
                            <GridPane.margin>
                               <Insets left="25.0" top="45.0" />
@@ -65,15 +57,7 @@
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></Label>
-                              <ComboBox fx:id="cmbTitle2" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="211.0">
-                                 <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                       <String fx:value="Mr." />
-                                       <String fx:value="Mrs." />
-                                       <String fx:value="Ms." />
-                                    </FXCollections>
-                                 </items>
-                              </ComboBox>
+                              <ComboBox fx:id="cmbSubject" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="211.0" />
                                     </children>
                            <GridPane.margin>
                               <Insets left="25.0" top="45.0" />
@@ -82,15 +66,7 @@
                                 <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="14" GridPane.columnSpan="8" GridPane.rowIndex="4">
                                     <children>
                                         <Label prefHeight="17.0" prefWidth="109.0" text="Slot" />
-                              <ComboBox fx:id="cmbSlot" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0">
-                                 <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                       <String fx:value="Mr." />
-                                       <String fx:value="Mrs." />
-                                       <String fx:value="Ms." />
-                                    </FXCollections>
-                                 </items>
-                              </ComboBox>
+                              <ComboBox fx:id="cmbSlot" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
                                     </children>
                            <GridPane.margin>
                               <Insets left="25.0" top="45.0" />
@@ -102,15 +78,7 @@
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></Label>
-                              <ComboBox fx:id="cmbDay" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="211.0">
-                                 <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                       <String fx:value="Mr." />
-                                       <String fx:value="Mrs." />
-                                       <String fx:value="Ms." />
-                                    </FXCollections>
-                                 </items>
-                              </ComboBox>
+                              <ComboBox fx:id="cmbDay" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="211.0" />
                                     </children>
                            <GridPane.margin>
                               <Insets left="25.0" top="35.0" />
@@ -119,15 +87,7 @@
                                 <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="14" GridPane.columnSpan="8" GridPane.rowIndex="6">
                                     <children>
                                         <Label prefHeight="17.0" prefWidth="110.0" text="Teacher" />
-                              <ComboBox fx:id="cmbTimeInterchange" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0">
-                                 <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                       <String fx:value="Mr." />
-                                       <String fx:value="Mrs." />
-                                       <String fx:value="Ms." />
-                                    </FXCollections>
-                                 </items>
-                              </ComboBox>
+                              <ComboBox fx:id="cmbTeacher" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
                                     </children>
                            <GridPane.margin>
                               <Insets left="25.0" top="35.0" />

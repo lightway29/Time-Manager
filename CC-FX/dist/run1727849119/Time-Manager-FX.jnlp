@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Time-Manager-FX.jar" size="800766" download="eager" />
+    <jar href="Time-Manager-FX.jar" size="795131" download="eager" />
     <jar href="lib/GrFingerJava.jar" size="13041" download="eager" />
     <jar href="lib/Undecorator.jar" size="99012" download="eager" />
     <jar href="lib/comm.jar" size="28043" download="eager" />

@@ -251,6 +251,240 @@ public class TimeTableDAO {
         }
         return available;
     }
+     
+        public ArrayList loadSubject() {
+
+        String subject = null;
+        ArrayList subjectList = new ArrayList();
+
+        if (star.con == null) {
+            log.error("Database connection failiure.");
+        } else {
+            try {
+                Statement stt = star.con.createStatement();
+                ResultSet r = stt.
+                        executeQuery("SELECT * FROM subject");
+                while (r.next()) {
+                    subject = r.getString("subject");
+
+                    subjectList.add(subject);
+                }
+
+            } catch (ArrayIndexOutOfBoundsException | SQLException |
+                    NullPointerException e) {
+                if (e instanceof ArrayIndexOutOfBoundsException) {
+                    log.error("Exception tag --> "
+                            + "Invalid entry location for list");
+                } else if (e instanceof SQLException) {
+                    log.error("Exception tag --> " + "Invalid sql statement "
+                            + e.getMessage());
+                } else if (e instanceof NullPointerException) {
+                    log.error("Exception tag --> " + "Empty entry for list");
+                }
+                return null;
+            } catch (Exception e) {
+                log.error("Exception tag --> " + "Error");
+                return null;
+            }
+        }
+        return subjectList;
+    }
+
+          public ArrayList loadTeacher() {
+
+        String subject = null;
+        ArrayList subjectList = new ArrayList();
+
+        if (star.con == null) {
+            log.error("Database connection failiure.");
+        } else {
+            try {
+                Statement stt = star.con.createStatement();
+                ResultSet r = stt.
+                        executeQuery("SELECT * FROM Teacher");
+                while (r.next()) {
+                    subject = r.getString("teacher_name");
+
+                    subjectList.add(subject);
+                }
+
+            } catch (ArrayIndexOutOfBoundsException | SQLException |
+                    NullPointerException e) {
+                if (e instanceof ArrayIndexOutOfBoundsException) {
+                    log.error("Exception tag --> "
+                            + "Invalid entry location for list");
+                } else if (e instanceof SQLException) {
+                    log.error("Exception tag --> " + "Invalid sql statement "
+                            + e.getMessage());
+                } else if (e instanceof NullPointerException) {
+                    log.error("Exception tag --> " + "Empty entry for list");
+                }
+                return null;
+            } catch (Exception e) {
+                log.error("Exception tag --> " + "Error");
+                return null;
+            }
+        }
+        return subjectList;
+    }
+
+      public ArrayList<ArrayList<String>> searchTimetableDetails(
+            String searchTerm) {
+
+        String encodedSearchTerm = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                searchTerm);
+
+        String id = null;
+        String timetableTitle = null;
+
+        ArrayList<ArrayList<String>> mainList
+                = new ArrayList<ArrayList<String>>();
+
+        if (star.con == null) {
+
+            log.info(" Exception tag --> " + "Database connection failiure. ");
+            return null;
+
+        } else {
+            try {
+
+                String query = "SELECT * "
+                        + "From class_time_table "
+                        + "Where time_table_title LIKE ? or id LIKE ? ";
+
+                PreparedStatement pstmt = star.con.prepareStatement(query);
+                pstmt.setString(1, encodedSearchTerm + "%");
+                pstmt.setString(2, encodedSearchTerm + "%");
+                ResultSet r = pstmt.executeQuery();
+
+                while (r.next()) {
+
+                    ArrayList<String> list = new ArrayList<String>();
+
+                    id = r.getString("id");
+                    timetableTitle = r.getString("time_table_title");
+
+                    list.add(id);
+                    list.add(timetableTitle);
+
+                    mainList.add(list);
+
+                }
+
+            } catch (ArrayIndexOutOfBoundsException | SQLException |
+                    NullPointerException e) {
+
+                if (e instanceof ArrayIndexOutOfBoundsException) {
+
+                    log.error(
+                            "Exception tag --> "
+                            + "Invalid entry location for list");
+
+                } else if (e instanceof SQLException) {
+
+                    log.error("Exception tag --> " + "Invalid sql statement");
+
+                } else if (e instanceof NullPointerException) {
+
+                    log.error("Exception tag --> " + "Empty entry for list");
+
+                }
+                return null;
+            } catch (Exception e) {
+
+                log.error("Exception tag --> " + "Error");
+
+                return null;
+            }
+        }
+        return mainList;
+    }
+      
+      
+      public ArrayList<ArrayList<String>> getTableInfo(String fromDate) {
+
+
+        String encodedFromDate = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                fromDate);
+
+        String itemId = null;
+        String ReturnNoteId = null;
+        String BatchNo = null;
+        String Date = null;
+
+        ArrayList<ArrayList<String>> mainlist
+                = new ArrayList<ArrayList<String>>();
+
+        if (star.con == null) {
+
+            log.info(" Exception tag --> " + "Database connection failiure. ");
+            return null;
+
+        } else {
+            try {
+
+                String query = null;
+                
+                    query = "select * from class_time_table_reg "
+                            + "where class_time_table_id = ? ";
+                
+
+                PreparedStatement pstmt = star.con.prepareStatement(query);
+                pstmt.setString(1, encodedFromDate);
+
+
+                ResultSet r = pstmt.executeQuery();
+
+                while (r.next()) {
+                    
+                    ArrayList<String> list = new ArrayList<String>();
+
+                    itemId = r.getString("mon");
+                    ReturnNoteId = r.getString("tue");
+                    BatchNo = r.getString("wed");
+                    Date = r.getString("thu");
+
+
+
+                    list.add(itemId);
+                    list.add(ReturnNoteId);
+                    list.add(BatchNo);
+                    list.add(Date);
+ 
+
+                    mainlist.add(list);
+
+                }
+
+            } catch (ArrayIndexOutOfBoundsException | SQLException |
+                    NullPointerException e) {
+
+                if (e instanceof ArrayIndexOutOfBoundsException) {
+
+                    log.error("Exception tag --> "
+                            + "Invalid entry location for list");
+
+                } else if (e instanceof SQLException) {
+
+                    log.
+                            error("Exception tag --> " + "Invalid sql statement"
+                                    + e);
+
+                } else if (e instanceof NullPointerException) {
+
+                    log.error("Exception tag --> " + "Empty entry for list");
+
+                }
+                return null;
+            } catch (Exception e) {
+
+                log.error("Exception tag --> " + "Error");
+
+                return null;
+            }
+        }
+        return mainlist;
+    }
 
 
 }
