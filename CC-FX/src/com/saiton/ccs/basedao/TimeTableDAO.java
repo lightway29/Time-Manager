@@ -211,11 +211,7 @@ public class TimeTableDAO {
      public boolean isSlotAvailable(String timetableId,String day,String subject,String slot) {
         String encodedTimetableId = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
                 timetableId);
-        
-//         System.out.println("timetableId - "+timetableId);
-//         System.out.println("day - "+day);
-//         System.out.println("subject - "+subject);
-//         System.out.println("slot - "+slot);
+
 
         boolean available = true;
 
