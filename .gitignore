@@ -25,3 +25,5 @@ CC-FX/nbproject/private/private.xml
 *.properties
 CC-FX/nbproject/private/configs/Run_in_Browser.properties
 CC-FX/dist
+
+CC-FX/build/built-jar.properties
