@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="class_timetable_id" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["..\\Reports\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["..//Reports//"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="class_no" class="java.lang.String"/>
 	<queryString>
