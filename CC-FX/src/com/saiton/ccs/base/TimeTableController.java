@@ -544,7 +544,7 @@ public class TimeTableController extends AnchorPane implements
             }
         }
         
-    /*
+    
          //<editor-fold defaultstate="collapsed" desc="Current Print Code">
         HashMap paramOne = new HashMap();
         paramOne.put("class_timetable_id", "1");
@@ -575,7 +575,7 @@ public class TimeTableController extends AnchorPane implements
         //                    MessageBox.MessageIcon.MSG_ICON_SUCCESS,
         //                    MessageBox.MessageType.MSG_OK);
         //</editor-fold>
-        */
+        
     }
 
     @FXML
@@ -693,7 +693,7 @@ public class TimeTableController extends AnchorPane implements
                 for (int i = 0; i < additionalItemInfo.size(); i++) {
 
                     timeTable = new Timetable();
-                    System.out.println("Table loading...");
+                    
                     timeTable.colDay.
                             setValue(additionalItemInfo.get(i).get(0));
                     timeTable.colSlot.setValue(additionalItemInfo.get(
