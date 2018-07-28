@@ -48,9 +48,9 @@ import org.controlsfx.control.PopOver;
 
 /**
  * FXML Controller class
+ *
  * @author lightway
  */
-
 public class TimeTableController extends AnchorPane implements
         Initializable,
         Validatable, StagePassable {
@@ -128,7 +128,6 @@ public class TimeTableController extends AnchorPane implements
     );
 
     //<editor-fold defaultstate="collapsed" desc="Methods">
-
     /**
      * Initializes the controller class.
      */
@@ -490,11 +489,14 @@ public class TimeTableController extends AnchorPane implements
     @FXML
     private void btnGenerateClassTimeTableOnAction(ActionEvent event) {
 
-//        System.out.println("Slot for Art - "+timeTableDAO.isSlotAvailable("1", "mon",
-//                                "Art","1"));
+        //System.out.println("Slot for Art - "+timeTableDAO.isSlotAvailable("1", "mon",
+        //"Art","1"));
         // Classes 1
         // Subject all the subject go through
         // Teacher selected teacher
+        
+        int maxPeriodPerDay = 2;
+        String timeTable = "1"; //Should be from the data in the textfield
         ArrayList<String> classList = null;
         classList = timeTableDAO.getClassGroupList();
 
@@ -518,23 +520,107 @@ public class TimeTableController extends AnchorPane implements
 
                 for (int i = 1; i < 9; i++) {
                     String subject = "";
+                    int subjectMaxCountPerWeek = 0;
+
                     boolean isSubjectFound = false;
 
                     for (int subjectIndex = 0; subjectIndex < subjectList.size();
                             subjectIndex++) {
+                        int currentCount ;
 
-                        if (timeTableDAO.isSlotAvailable("1", dayList.get(
+                        if (timeTableDAO.isSlotAvailable(timeTable, dayList.get(
                                 dayIndex),
                                 subjectList.get(subjectIndex), i + "")) {
 
                             subject = subjectList.get(subjectIndex);
                             subjectIndex = subjectList.size();
+
+                            subjectMaxCountPerWeek = timeTableDAO.
+                                    getCountPerWeek(subject, classList.get(
+                                                    classIndex));                            
+                            /* 
+                             Calculation for determining the no of subjects 
+                             to be added on this day. The max period for a day
+                             would be two which will be retrived from a 
+                             hardcoded vairiable maxPeriodPerDay                           
+                             */
+                            
+                            currentCount = timeTableDAO.getCurrentInstances(subject,
+                                            classList.get(classIndex));
+                            System.out.println("Current Count - "+currentCount);
+                            if((subjectMaxCountPerWeek-currentCount)>=maxPeriodPerDay){
+                                //Insert two periods
+                                
+//                                boolean isEntryAvailable = timeTableDAO.isEntryAvailable(timeTable, dayList.get(
+//                                dayIndex),
+//                                subjectList.get(subjectIndex), i + "");
+//                                
+//                                boolean isSlotAvailable = timeTableDAO.isSlotAvailable(timeTable, dayList.get(
+//                                dayIndex),
+//                                subjectList.get(subjectIndex), i + "");
+                                
+                                 boolean isEntryAvailable = false;
+                                 boolean isSlotAvailable = false;
+                                
+                                
+                                if (isEntryAvailable && isSlotAvailable) {
+                                    for (int j = 0; j < maxPeriodPerDay; j++) {
+                                    timeTableDAO.updateTimeTableEntry(
+                                            timeTable,
+                                            classList.get(classIndex),
+                                            dayList.get(dayIndex),
+                                            classList.get(classIndex)+"A",
+                                            i+"",
+                                            subject);
+                                    if (j==0) {
+                                        i++;
+                                    }
+                                
+                                }
+                                }else{
+                                for (int j = 0; j < maxPeriodPerDay; j++) {
+                                    timeTableDAO.insertTimeTableEntry(
+                                            timeTable,
+                                            classList.get(classIndex),
+                                            dayList.get(dayIndex),
+                                            classList.get(classIndex)+"A",
+                                            i+"",
+                                            subject);
+                                    if (j==0) {
+                                        i++;
+                                    }
+                                
+                                }
+                                
+                                    
+                                }
+//                                dayIndex++;
+                                subjectIndex++;
+                            }else if((subjectMaxCountPerWeek-currentCount)<maxPeriodPerDay &&
+                                    (subjectMaxCountPerWeek-currentCount)>0){
+                                //Insert one periods
+//                                timeTableDAO.insertTimeTableEntry(
+//                                            timeTable,
+//                                            classList.get(classIndex),
+//                                            dayList.get(dayIndex),
+//                                            classList.get(classIndex)+"A",
+//                                            i+"",
+//                                            subject);
+                            }
+//                            
+                            
+                            
+//                            System.out.println("no of periods found - "+timeTableDAO.getCurrentInstances(subject,
+//                                            classList.get(classIndex)));
+                            
+                            
                         }
 
                     }
 
                     System.out.println("Class - " + classList.get(classIndex)
                             + " Subject - " + subject
+                            + " Subject Max - " + subjectMaxCountPerWeek
                             + " Day - " + dayList.get(dayIndex)
                             + " Slot availability - " + i);
                     subject = "";
@@ -543,39 +629,39 @@ public class TimeTableController extends AnchorPane implements
 
             }
         }
-        
+        /*
     
          //<editor-fold defaultstate="collapsed" desc="Current Print Code">
-        HashMap paramOne = new HashMap();
-        paramOne.put("class_timetable_id", "1");
-        paramOne.put("class_no", "1A");
+         HashMap paramOne = new HashMap();
+         paramOne.put("class_timetable_id", "1");
+         paramOne.put("class_no", "1A");
 
-        File file
-                = new File(
-                        ".//Reports//timetable_1st_half.jasper");
-        String imgOne = file.getAbsolutePath();
-        ReportGenerator report = new ReportGenerator(imgOne, paramOne);
+         File file
+         = new File(
+         ".//Reports//timetable_1st_half.jasper");
+         String imgOne = file.getAbsolutePath();
+         ReportGenerator report = new ReportGenerator(imgOne, paramOne);
 
-        report.setVisible(true);
+         report.setVisible(true);
 
          //----------------------
-        HashMap param = new HashMap();
-        param.put("class_teacher_timetable_id", "1");
+         HashMap param = new HashMap();
+         param.put("class_teacher_timetable_id", "1");
 
-        File fileOne
-                = new File(
-                        ".//Reports//teacher_timetable.jasper");
-        String img = fileOne.getAbsolutePath();
-        ReportGenerator r = new ReportGenerator(img, param);
+         File fileOne
+         = new File(
+         ".//Reports//teacher_timetable.jasper");
+         String img = fileOne.getAbsolutePath();
+         ReportGenerator r = new ReportGenerator(img, param);
 
-        r.setVisible(true);
+         r.setVisible(true);
 
          //            mb.ShowMessage(stage, ErrorMessages.SuccesfullyCreated,
-        //                    MessageBoxTitle.INFORMATION.toString(),
-        //                    MessageBox.MessageIcon.MSG_ICON_SUCCESS,
-        //                    MessageBox.MessageType.MSG_OK);
-        //</editor-fold>
-        
+         //                    MessageBoxTitle.INFORMATION.toString(),
+         //                    MessageBox.MessageIcon.MSG_ICON_SUCCESS,
+         //                    MessageBox.MessageType.MSG_OK);
+         //</editor-fold>
+         */
     }
 
     @FXML
@@ -671,8 +757,8 @@ public class TimeTableController extends AnchorPane implements
         }
 
     }
-    
-     private void loadGrnData() {
+
+    private void loadGrnData() {
 
         TableTimetableData.clear();
 
@@ -684,7 +770,7 @@ public class TimeTableController extends AnchorPane implements
         if (list != null) {
 
             for (int i = 0; i < list.size(); i++) {
-                
+
                 additionalItemInfo.add(list.get(i));
             }
 
@@ -693,7 +779,7 @@ public class TimeTableController extends AnchorPane implements
                 for (int i = 0; i < additionalItemInfo.size(); i++) {
 
                     timeTable = new Timetable();
-                    
+
                     timeTable.colDay.
                             setValue(additionalItemInfo.get(i).get(0));
                     timeTable.colSlot.setValue(additionalItemInfo.get(
@@ -704,7 +790,7 @@ public class TimeTableController extends AnchorPane implements
                     timeTable.colTeacher.setValue(additionalItemInfo.
                             get(i).
                             get(3));
-                    
+
                     timetableData.add(timeTable);
                 }
             }
@@ -716,7 +802,6 @@ public class TimeTableController extends AnchorPane implements
         }
 
     }
-
 
     private void loadTeacherToCombobox() {
 
@@ -736,7 +821,6 @@ public class TimeTableController extends AnchorPane implements
         }
     }
 
-   
     public class Timetable {
 
         public SimpleStringProperty colDay = new SimpleStringProperty(

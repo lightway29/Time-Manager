@@ -30,7 +30,6 @@ public class TimeTableDAO {
     Codec ORACLE_CODEC = new OracleCodec();
     private final Logger log = Logger.getLogger(this.getClass());
 
-
     public Boolean insertClassGroup(
             String classId,
             String subGroupId,
@@ -78,8 +77,6 @@ public class TimeTableDAO {
             }
         }
     }
-
-
 
     public ArrayList getSubjectList() {
 
@@ -157,10 +154,10 @@ public class TimeTableDAO {
         return classGroupList;
     }
 
-    
-     public String getClassId(String classTitle) {
+    public String getClassId(String classTitle) {
 
-        String encodedCusId = ESAPI.encoder().encodeForSQL(ORACLE_CODEC, classTitle);
+        String encodedCusId = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                classTitle);
         String classId = null;
 
         if (star.con == null) {
@@ -207,11 +204,241 @@ public class TimeTableDAO {
         return classId;
 
     }
-     
-     public boolean isSlotAvailable(String timetableId,String day,String subject,String slot) {
+
+    public boolean updateTimeTableEntry(
+            String classTimeTableId,
+            String classGroupId,
+            String day,
+            String classTitle,
+            String slot,
+            String subject) {
+
+        ArrayList<String> itemList = new ArrayList<>();
+
+//        String encodedItemCode = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+//                itemCode);
+//        String encodedBatchNo = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+//                batchNo);
+
+        if (star.con == null) {
+            log.info(" Exception tag --> " + "Database connection failiure. ");
+            return false;
+        } else {
+
+            try {
+                String sql
+                        = "update class_time_table_reg "
+                        + "set "+day+" = ?"
+                        + "where class_time_table_id = ? AND "
+                        + "class_group_id = ? AND slot = ? ";
+                PreparedStatement ps = star.con.prepareStatement(sql);
+
+                ps.setString(1,subject);
+                ps.setString(2, classTimeTableId);
+                ps.setString(3, classGroupId);
+                ps.setString(4, slot);
+
+                int val = ps.executeUpdate();
+
+                if (val == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } catch (SQLException e) {
+                log.error("Exception tag --> " + "Invalid sql statement " + e.
+                        getMessage());
+                return false;
+
+            } catch (Exception e) {
+                log.error("Exception tag --> " + "Error");
+                return false;
+            }
+
+        }
+
+    }
+
+    public Boolean insertTimeTableEntry(
+            String classTimeTableId,
+            String classGroupId,
+            String day,
+            String classTitle,
+            String slot,
+            String subject) {
+
+        if (star.con == null) {
+
+            log.error("Exception tag --> " + "Database connection failiure. ");
+            return null;
+
+        } else {
+            try {
+
+                PreparedStatement ps = star.con.prepareStatement("INSERT INTO "
+                        + "class_time_table_reg (class_time_table_id,class_group_id,"
+                        + day + ",class_title,slot) VALUES(?,?,?,?,?)");
+                ps.setString(1, classTimeTableId);
+                ps.setString(2, classGroupId);
+                ps.setString(3, subject);
+                ps.setString(4, classTitle);
+                ps.setString(5, slot);
+
+                int val = ps.executeUpdate();
+                if (val == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } catch (NullPointerException | SQLException e) {
+
+                if (e instanceof NullPointerException) {
+
+                    log.error("Exception tag --> " + "Empty entry passed");
+
+                } else if (e instanceof SQLException) {
+
+                    log.error("Exception tag --> " + "Invalid sql statement "
+                            + e);
+
+                }
+                return false;
+            } catch (Exception e) {
+
+                log.error("Exception tag --> " + "Error");
+
+                return false;
+            }
+        }
+    }
+
+    public int getCountPerWeek(String subject, String classGroup) {
+
+        String encodedSubject = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                subject);
+        String encodedClassGroup = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                classGroup);
+        int subjectMax = 0;
+
+        if (star.con == null) {
+
+            log.error("Exception tag --> " + "Database connection failiure. ");
+            return 0;
+
+        } else {
+            try {
+
+                String query
+                        = "SELECT * FROM class_section WHERE subject = ? AND class_group_id = ? ";
+
+                PreparedStatement pstmt = star.con.prepareStatement(query);
+                pstmt.setString(1, encodedSubject);
+                pstmt.setString(2, encodedClassGroup);
+
+                ResultSet r = pstmt.executeQuery();
+
+                while (r.next()) {
+
+                    subjectMax = Integer.parseInt(r.getString(
+                            "total_no_of_periods"));
+
+                }
+
+            } catch (SQLException | NullPointerException e) {
+
+                if (e instanceof SQLException) {
+
+                    log.error("Exception tag --> " + "Invalid sql statement");
+
+                } else if (e instanceof NullPointerException) {
+
+                    log.error("Exception tag --> " + "Empty entry for list");
+
+                }
+                return 0;
+            } catch (Exception e) {
+
+                log.error("Exception tag --> " + "Error");
+
+                return 0;
+            }
+        }
+
+        return subjectMax;
+
+    }
+
+    public int getCurrentInstances(String subject, String classGroupId) {
+
+        String encodedSubject = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                subject);
+        String encodedClassGroup = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                classGroupId);
+        int count = 0;
+        ArrayList<String> dayList = new ArrayList();
+        dayList.add("mon");
+        dayList.add("tue");
+        dayList.add("wed");
+        dayList.add("thu");
+        dayList.add("fri");
+
+        if (star.con == null) {
+
+            log.error("Exception tag --> " + "Database connection failiure. ");
+            return 0;
+
+        } else {
+            try {
+                for (int dayIndex = 0; dayIndex < dayList.size(); dayIndex++) {
+
+                    String query
+                            = "SELECT * FROM class_time_table_reg WHERE "
+                            + dayList.get(dayIndex)
+                            + " = ? AND class_group_id = ? ";
+
+                    PreparedStatement pstmt = star.con.prepareStatement(query);
+                    pstmt.setString(1, encodedSubject);
+                    pstmt.setString(2, encodedClassGroup);
+
+                    ResultSet r = pstmt.executeQuery();
+
+                    while (r.next()) {
+
+                        count++;
+
+                    }
+                }
+
+            } catch (SQLException | NullPointerException e) {
+
+                if (e instanceof SQLException) {
+
+                    log.error("Exception tag --> " + "Invalid sql statement");
+
+                } else if (e instanceof NullPointerException) {
+
+                    log.error("Exception tag --> " + "Empty entry for list");
+
+                }
+                return 0;
+            } catch (Exception e) {
+
+                log.error("Exception tag --> " + "Error");
+
+                return 0;
+            }
+        }
+
+        return count;
+
+    }
+
+    public boolean isSlotAvailable(String timetableId, String day,
+            String subject, String slot) {
         String encodedTimetableId = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
                 timetableId);
-
 
         boolean available = true;
 
@@ -221,8 +448,10 @@ public class TimeTableDAO {
         } else {
 
             try {
+
                 String query
-                        = "SELECT * FROM class_time_table_reg where class_time_table_id = ? AND "+day+" = ? AND slot = ?";
+                        = "SELECT * FROM class_time_table_reg where class_time_table_id = ? AND "
+                        + day + " = ? AND slot = ?";
                 PreparedStatement pstmt = star.con.prepareStatement(query);
                 pstmt.setString(1, encodedTimetableId);
                 pstmt.setString(2, subject);
@@ -251,8 +480,54 @@ public class TimeTableDAO {
         }
         return available;
     }
-     
-        public ArrayList loadSubject() {
+    
+public boolean isEntryAvailable(String timetableId, String day,
+            String subject, String slot) {
+        String encodedTimetableId = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
+                timetableId);
+
+        boolean available = false;
+
+        if (star.con == null) {
+            log.error("Databse connection failiure.");
+            return false;
+        } else {
+
+            try {
+
+                String query
+                        = "SELECT * FROM class_time_table_reg where class_time_table_id = ? AND "
+                        + "slot = ?";
+                PreparedStatement pstmt = star.con.prepareStatement(query);
+                pstmt.setString(1, encodedTimetableId);
+                
+                pstmt.setString(2, slot);
+
+                ResultSet r = pstmt.executeQuery();
+
+                while (r.next()) {
+                    System.out.println("Entry found");
+                    available = true;
+                }
+
+            } catch (NullPointerException | SQLException e) {
+
+                if (e instanceof NullPointerException) {
+                    log.error("Exception tag --> " + "Empty entry passed");
+                } else if (e instanceof SQLException) {
+                    log.error("Exception tag --> " + "Invalid sql statement "
+                            + e.getMessage());
+                }
+                return false;
+            } catch (Exception e) {
+                log.error("Exception tag --> " + "Error");
+                return false;
+            }
+        }
+        return available;
+    }
+
+    public ArrayList loadSubject() {
 
         String subject = null;
         ArrayList subjectList = new ArrayList();
@@ -290,7 +565,7 @@ public class TimeTableDAO {
         return subjectList;
     }
 
-          public ArrayList loadTeacher() {
+    public ArrayList loadTeacher() {
 
         String subject = null;
         ArrayList subjectList = new ArrayList();
@@ -328,7 +603,7 @@ public class TimeTableDAO {
         return subjectList;
     }
 
-      public ArrayList<ArrayList<String>> searchTimetableDetails(
+    public ArrayList<ArrayList<String>> searchTimetableDetails(
             String searchTerm) {
 
         String encodedSearchTerm = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
@@ -399,10 +674,8 @@ public class TimeTableDAO {
         }
         return mainList;
     }
-      
-      
-      public ArrayList<ArrayList<String>> getTableInfo(String fromDate) {
 
+    public ArrayList<ArrayList<String>> getTableInfo(String fromDate) {
 
         String encodedFromDate = ESAPI.encoder().encodeForSQL(ORACLE_CODEC,
                 fromDate);
@@ -424,19 +697,17 @@ public class TimeTableDAO {
             try {
 
                 String query = null;
-                
-                    query = "select * from class_time_table_reg "
-                            + "where class_time_table_id = ? ";
-                
+
+                query = "select * from class_time_table_reg "
+                        + "where class_time_table_id = ? ";
 
                 PreparedStatement pstmt = star.con.prepareStatement(query);
                 pstmt.setString(1, encodedFromDate);
 
-
                 ResultSet r = pstmt.executeQuery();
 
                 while (r.next()) {
-                    
+
                     ArrayList<String> list = new ArrayList<String>();
 
                     itemId = r.getString("mon");
@@ -444,13 +715,10 @@ public class TimeTableDAO {
                     BatchNo = r.getString("wed");
                     Date = r.getString("thu");
 
-
-
                     list.add(itemId);
                     list.add(ReturnNoteId);
                     list.add(BatchNo);
                     list.add(Date);
- 
 
                     mainlist.add(list);
 
@@ -485,6 +753,5 @@ public class TimeTableDAO {
         }
         return mainlist;
     }
-
 
 }
